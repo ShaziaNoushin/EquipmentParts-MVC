@@ -1,0 +1,21 @@
+﻿@model EquipmentPart_Mid_Month_Project.ViewModels.EquipmentInputModel
+@for (var i = 0; i < Model.Parts.Count; i++)
+{
+    <div class="col-3">
+        <label>PartName</label>
+        @Html.TextBoxFor(x => Model.Parts[i].PartName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => Model.Parts[i].PartName, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-3">
+        <label>Quantity</label>
+        @Html.TextBoxFor(x => Model.Parts[i].Quantity, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => Model.Parts[i].Quantity, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-1">
+
+        <button class="btn btn-warning btn-sm mt-4 del" data-index="@i" type="button">Remove</button>
+    </div>
+}
+
+

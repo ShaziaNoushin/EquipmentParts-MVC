@@ -1,0 +1,94 @@
+﻿@model IEnumerable<EquipmentPart_Mid_Month_Project.Models.Equipment>
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Common
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3>Equipments</h3>
+        <div class="d-flex justify-content-end mb-1">
+            @Html.ActionLink("Create", "Create", "Equipment", new { }, new { @class = "btn btn-primary btn-sm" })
+        </div>
+        <table class="table table-bordered">
+            <thead class="table-danger">
+                <tr>
+                    <th>Equipment Name</th>
+                    <th>Delivery Date</th>
+                    <th>Price</th>
+                    <th>Available</th>
+                    <th>Picture</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr id="tr_@e.EquipmentId" style="vertical-align:middle">
+
+                        <td>@e.EquipmentName</td>
+                        <td>@e.DeliveryDate.ToString("MMM dd, yyyy")</td>
+                        <td>@e.Price.ToString("0.00")</td>
+                        <td>@(e.Available ? "Yes": "No")</td>
+                        <td>
+                            <img class="rounded-circle" src="~/Pictures/@e.Picture" style="width:40px" />
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Equipment", new { id = e.EquipmentId }, new { @class = "btn btn-secondary btn-sm" })
+                            @Ajax.ActionLink("Delete", "Delete", "Equipment", new { id = e.EquipmentId }, new AjaxOptions { Confirm = "Ayr you sure to Delete?", HttpMethod = "Post", OnSuccess = "onSuccess", }, new { @class = "btn btn-danger btn-sm" })
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="4">
+                            <h2> Parts</h2>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Part Name</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var p in e.Parts)
+                                    {
+                                        <tr>
+                                            <td>@p.PartName</td>
+                                            <td>@p.Quantity</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+
+        </table>
+        <div class="d-flex justify-content-end">
+            @Html.PagedListPager((IPagedList)Model, pg => Url.Action("Index", new { pg = pg }),
+           new PagedListRenderOptions
+           {
+
+               PageClasses = new string[] { "page-link" },
+               LiElementClasses = new string[] { "page-item" }
+           })
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.6.3.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        function onSuccess(r) {
+            
+        }
+    </script>
+}
+
